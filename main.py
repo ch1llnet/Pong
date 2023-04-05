@@ -7,6 +7,8 @@ clock = time.Clock()
 
 w = 700
 h = 500
+s_x = 3
+s_y = 3
 
 win = display.set_mode((700, 500))
 
@@ -44,26 +46,36 @@ class Player(GameSprite):
 
 class Ball(GameSprite):
     def update(self):
-        global rand
-        self.rect.x -= self.speed
-        self.rect.y -= self.speed
+        global rand, s_x, s_y
+        self.rect.x -= s_x
+        self.rect.y -= s_y
         if sprite.collide_rect(astron1, potato):
-            self.rect.x += self.speed
+            s_x *= -1
+            s_y *= -1
             if rand == 1:
                 self.rect.y += self.speed
             else:
                 self.rect.y -= self.speed
-        if self.rect.y >= 480 or self.rect.y <= 20:
-            self.speed *= -1
+
+        if sprite.collide_rect(astron2, potato):
+            s_x *= -1
+            s_y *= -1
+            if rand == 1:
+                self.rect.y += self.speed
+            else:
+                self.rect.y -= self.speed
+
+        if self.rect.y >= 460 or self.rect.y <= 20:
+            self.rect.y *= -1
 
 
 
 
 
 
-astron1 = Player('racket.png', 20, 250, 5)
+astron1 = Player('racket.png', 10, 250, 5)
 astron2 = Player('racket.png', 640, 250, 5)
-potato = Ball('ball-tr.png', 350, 250, 5)
+potato = Ball('ball-tr.png', 350, 250, 3)
 
 
 
@@ -82,8 +94,8 @@ while game:
     if finish != True:
         win.blit(bg, (0, 0))
 
-        #potato.rect.x += potato.speed
-        #potato.rect.y += potato.speed
+        #potato.rect.x += s_x
+        #potato.rect.y += s_y
 
         astron1.update()
         astron1.reset()
